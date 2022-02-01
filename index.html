@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Actividad 7-12</title>
+    <style>
+        .container{
+            width: 500px;
+            margin: 0 auto;
+            padding: 0;
+        }
+        .numbers{
+            display: flex;
+            grid-gap: 2rem;
+        }
+        .number{
+            font-family: "Comic Sans MS";
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            width: 3.2rem;
+            height: 3.2rem;
+            border: 2px solid #00009a;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Variables
+            const numbers = [0,1,2,3,4,5,6,7,8,9]
+            const minCoins = 10;
+            const premio = 10;
+            const numero1 = document.querySelector('#numero_1');
+            const numero2 = document.querySelector('#numero_2');
+            const numero3 = document.querySelector('#numero_3');
+            const creditosRestantes = document.querySelector('#creditos');
+            const boton = document.querySelector('#boton__jugar');
+
+            // Funciones
+
+            /**
+             * Funcion que genera un numero aleatorio sobre un array
+             * @param {Array} numbers: array de numeros posibles
+             * @return {Number}: devuelve un valor del array
+             */
+            function generateRandom(array) {
+                    const item = array[Math.floor(Math.random()*array.length)];
+                    return item
+            }
+
+            /**
+             * Funcion de partida que genera los 3 numeros aleatorios y valida que sean iguales. Si lo son suma los creditos restantes + el premio, si no son iguales resta 1 credito
+             */
+            function partidaJackpot(){
+                // Generamos valores
+                numero1.textContent = generateRandom(numbers);
+                numero2.textContent = generateRandom(numbers);
+                numero3.textContent = generateRandom(numbers);
+                // Validacion
+                if (numero1.textContent === numero2.textContent && numero2.textContent === numero3.textContent){
+                    creditosRestantes.textContent = parseInt(creditosRestantes.textContent) + premio;
+                } else {
+                    creditosRestantes.textContent = creditosRestantes.textContent - 1;
+                }
+            }
+
+            /**
+             * Funcion para el boton jugar donde validamos si hay creditos antes de la partida. Si el valor es mayor o igual a 1 te dejara jugar llamando a la funcion partidaJackpot(). Si es menor pues bloqueara el boton y dara una alerta
+             */
+            function validacionDeCreditos() {
+                if (creditosRestantes.textContent >= 1) {
+                    partidaJackpot()
+                } else {
+                    alert("Creditos Insuficientes");
+                    boton.disabled = true;
+                }
+            }
+
+
+
+            // Evento
+
+            boton.addEventListener('click', validacionDeCreditos)
+
+            // Inicio
+
+            creditosRestantes.textContent = minCoins;
+
+        })
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="numbers">
+            <span id="numero_1" class="number"></span>
+            <span id="numero_2" class="number"></span>
+            <span id="numero_3"class="number"></span>
+        </div>
+        <div class="creditos">
+            <span>Creditos:</span>
+            <span id="creditos"></span>
+            <button id="boton__jugar">Jugar</button>
+        </div>
+    </div>
+</body>
+</html>
